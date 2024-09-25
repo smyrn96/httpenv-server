@@ -38,10 +38,15 @@ jobs:
           push: false
           load: true # Export to Docker Engine rather than pushing to a registry
           tags: ${{ github.run_id }}
-          cache-from: type=gha
           target: test
+          cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
+
+      # for simple tests (npm test, etc.) just run a local image in docker
+      - name: Unit Testing in Docker
+        run: |
+          docker run --rm ${{ github.run_id }} echo "run test commands here"
 
       - name: Run Trivy for all CVEs (non-blocking)
         uses: aquasecurity/trivy-action@master
@@ -66,11 +71,6 @@ jobs:
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
-
-      # for simple tests (npm test, etc.) just run a local image in docker
-      - name: Unit Testing in Docker
-        run: |
-          docker run --rm ${{ github.run_id }} echo "run test commands here"
 
       - name: Docker meta
         id: docker_meta
