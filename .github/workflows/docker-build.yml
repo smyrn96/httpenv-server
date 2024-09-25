@@ -45,7 +45,7 @@ jobs:
       # for simple tests (npm test, etc.) just run a local image in docker
       - name: Unit Testing in Docker
         run: |
-          docker run --rm ${{ github.run_id }} echo "run test commands here"
+          docker run --rm ${{ github.run_id }} go test ./...
 
       - name: Run Trivy for all CVEs (non-blocking)
         uses: aquasecurity/trivy-action@master
