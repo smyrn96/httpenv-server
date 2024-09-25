@@ -2,6 +2,10 @@
 FROM golang:alpine AS build
 
 WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY *.go ./
 
 # Copy the Go source file to the container
 COPY httpenv.go .

@@ -6,6 +6,7 @@ import (
   "os"
   "strings"
 )
+
 func serve(w http.ResponseWriter, r *http.Request) {
   env := map[string]string{}
   for _, keyval := range os.Environ() {
@@ -19,6 +20,7 @@ func serve(w http.ResponseWriter, r *http.Request) {
   }
   w.Write([]byte(bytes))
 }
+
 func main() {
   fmt.Printf("Starting httpenv listening on port 8888.\n")
   http.HandleFunc("/", serve)
