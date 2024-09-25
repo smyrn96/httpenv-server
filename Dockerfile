@@ -1,7 +1,11 @@
 FROM golang:alpine as build
-COPY httpenv.go /go
+
+RUN go mod tidy
 COPY go.mod go.sum ./
 RUN go mod download
+
+COPY httpenv.go /go
+
 COPY *.go ./
 RUN go build httpenv.go
 
