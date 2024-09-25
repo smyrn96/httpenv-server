@@ -1,8 +1,12 @@
-FROM golang:alpine
+FROM golang:alpine as build
 COPY httpenv.go /go
 RUN go build httpenv.go
 
-FROM alpine
+# Stage 2: Test (this should match the target name in your workflow)
+FROM build as test
+RUN go test ./...
+
+FROM build
 RUN addgroup -g 1000 httpenv \
     && adduser -u 1000 -G httpenv -D httpenv
 COPY --from=0 --chown=httpenv:httpenv /go/httpenv /httpenv
