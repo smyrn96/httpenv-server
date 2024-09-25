@@ -2,8 +2,8 @@
 FROM golang:alpine AS build
 
 WORKDIR /app
+RUN go mod download all
 COPY go.mod go.sum ./
-RUN go mod download
 
 COPY *.go ./
 
