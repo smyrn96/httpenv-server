@@ -1,20 +1,23 @@
-FROM golang:1.23 as build
+# Stage 1: Build the Go application
+FROM golang:alpine AS build
 
-# Set the working directory inside the Docker container
-WORKDIR /go/src/app
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy go.mod and go.sum before downloading dependencies
-COPY go.mod .
+# Copy go.mod and go.sum files first for caching dependencies
+COPY go.mod go.sum ./
+
+# Download Go modules dependencies
 RUN go mod download
 
-# Copy the source code (including httpenv.go and other Go files)
-COPY *.go ./
+# Copy the rest of the Go application source code
+COPY . .
 
 # Build the application
-RUN go build -o /go/bin/httpenv httpenv.go
+RUN go build -o httpenv httpenv.go
 
 # Stage 2: Test (this should match the target name in your workflow)
-FROM build as test
+FROM build AS test
 # Run tests
 RUN go test -v ./...
 
