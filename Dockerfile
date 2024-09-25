@@ -1,4 +1,4 @@
-FROM golang:alpine as build
+FROM golang:1.23 as build
 
 # Set the working directory inside the Docker container
 WORKDIR /go/src/app
@@ -20,7 +20,7 @@ FROM build as test
 RUN go test -v ./...
 
 # Stage 3: Final image
-FROM golang:alpine
+FROM golang:1.23
 RUN addgroup -g 1000 httpenv \
     && adduser -u 1000 -G httpenv -D httpenv
 COPY --from=0 --chown=httpenv:httpenv /go/httpenv /httpenv
