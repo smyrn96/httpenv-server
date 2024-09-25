@@ -4,7 +4,7 @@ RUN go build httpenv.go
 
 # Stage 2: Test (this should match the target name in your workflow)
 FROM build as test
-RUN go test
+RUN go test ./...
 
 FROM build
 RUN addgroup -g 1000 httpenv \
