@@ -4,7 +4,8 @@ FROM golang:alpine as build
 WORKDIR /go/src/app
 
 # Copy go.mod and go.sum before downloading dependencies
-COPY go.mod go.sum ./
+RUN go get -a 
+COPY go.mod ./
 RUN go mod download
 
 # Copy the source code (including httpenv.go and other Go files)
