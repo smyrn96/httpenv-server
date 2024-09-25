@@ -5,7 +5,6 @@ WORKDIR /go/src/app
 
 # Copy go.mod and go.sum before downloading dependencies
 COPY go.mod .
-COPY go.sum .
 RUN go mod download
 
 # Copy the source code (including httpenv.go and other Go files)
