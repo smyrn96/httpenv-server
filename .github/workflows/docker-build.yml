@@ -39,6 +39,7 @@ jobs:
           load: true # Export to Docker Engine rather than pushing to a registry
           tags: ${{ github.run_id }}
           cache-from: type=gha
+          target: test
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
@@ -65,6 +66,11 @@ jobs:
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
+
+      # for simple tests (npm test, etc.) just run a local image in docker
+      - name: Unit Testing in Docker
+        run: |
+          docker run --rm ${{ github.run_id }} echo "run test commands here"
 
       - name: Docker meta
         id: docker_meta
