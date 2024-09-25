@@ -44,7 +44,8 @@ jobs:
       - name: Docker build
         uses: docker/build-push-action@v6
         with:
-          push: true
+          push: false
+          load: true # Export to Docker Engine rather than pushing to a registry
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=gha
