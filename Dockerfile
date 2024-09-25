@@ -1,13 +1,16 @@
 # Stage 1: Build the Go application
-FROM golang:alpine AS build
+FROM golang:1.17 AS build
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Download Go modules dependencies
-RUN go get -a
+# Copy the go mod and sum files
+COPY go.mod go.sum ./
 
-# Copy the rest of the Go application source code
+# Download all dependencies
+RUN go mod download
+
+# Copy the source from the current directory to the working directory inside the container
 COPY . .
 
 # Build the application
@@ -19,7 +22,7 @@ FROM build AS test
 RUN go test -v ./...
 
 # Stage 3: Final image
-FROM golang:1.23
+FROM golang:1.17
 RUN addgroup -g 1000 httpenv \
     && adduser -u 1000 -G httpenv -D httpenv
 COPY --from=0 --chown=httpenv:httpenv /go/httpenv /httpenv
