@@ -1,27 +1,6 @@
-# Stage 1: Build the Go application
-FROM golang:alpine AS build
-
-WORKDIR /app
-RUN go mod init
-RUN go mod download all
-
-COPY *.go ./
-
-# Copy the Go source file to the container
-COPY httpenv.go .
-
-# Build the Go application
-RUN go build -o httpenv httpenv.go
-
-# Stage 2: Test (This is the target stage for testing)
-FROM build AS test
-
-# If you have test files, make sure to copy them
-# (assuming your test files are in the same directory)
-COPY _test.go .
-
-# Run Go tests
-RUN go test -v ./...
+FROM golang:alpine
+COPY httpenv.go /go
+RUN go build httpenv.go
 
 FROM alpine
 RUN addgroup -g 1000 httpenv \
