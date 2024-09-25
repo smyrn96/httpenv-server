@@ -1,6 +1,16 @@
-FROM golang:alpine
+FROM golang:alpine AS build
 COPY httpenv.go /go
 RUN go build httpenv.go
+
+FROM build as test
+# Copy go.mod and go.sum to the container
+COPY go.mod go.sum ./
+
+# Download the Go module dependencies
+RUN go mod download
+
+# Copy the rest of the application source code
+COPY *.go ./
 
 FROM alpine
 RUN addgroup -g 1000 httpenv \
