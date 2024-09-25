@@ -15,7 +15,7 @@ services:
   sut:
     image: "${TESTING_IMAGE}"
     depends_on:
-      allhands22:
+      docker-ci-automation:
         condition: service_started
       postgres:
         condition: service_healthy
