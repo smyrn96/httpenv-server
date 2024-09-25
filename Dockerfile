@@ -4,6 +4,8 @@ RUN go build httpenv.go
 
 FROM build AS test
 COPY _test.go /go
+COPY go.* ./
+RUN go mod download
 RUN go test ./...
 
 FROM build
