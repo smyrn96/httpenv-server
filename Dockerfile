@@ -1,16 +1,9 @@
 FROM golang:alpine AS build
 COPY httpenv.go /go
+COPY _test.go ./
 RUN go build httpenv.go
 
 FROM build AS test
-# Download the Go module dependencies
-RUN go mod tidy
-RUN go mod download all
-
-# Copy the rest of the application source code
-COPY *.go ./
-COPY _test.go ./
-RUN ls
 
 FROM alpine
 RUN addgroup -g 1000 httpenv \

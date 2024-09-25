@@ -1,0 +1,23 @@
+services:
+  docker-ci-automation:
+    image: "${TESTING_IMAGE}"
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./healthchecks:/healthchecks
+    healthcheck:
+      test: /healthchecks/postgres-healthcheck
+      interval: "5s"
+  sut:
+    image: "${TESTING_IMAGE}"
+    depends_on:
+      allhands22:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    # run all your tests here against the docker-ci-automation service
+    command: curl --fail http://docker-ci-automation:80 || exit 1
