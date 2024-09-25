@@ -9,6 +9,8 @@ import (
 	"testing"
 )
 
+import "testing"
+
 func TestServe(t *testing.T) {
 	// Set up environment variables for testing
 	os.Setenv("TEST_ENV_VAR", "test_value")
