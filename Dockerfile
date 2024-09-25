@@ -2,10 +2,7 @@ FROM golang:alpine AS build
 COPY httpenv.go /go
 RUN go build httpenv.go
 
-FROM build as test
-# Copy go.mod and go.sum to the container
-COPY go.mod go.sum ./
-
+FROM build AS test
 # Download the Go module dependencies
 RUN go mod download
 
