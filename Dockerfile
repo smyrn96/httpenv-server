@@ -2,6 +2,7 @@
 FROM golang:alpine AS build
 
 WORKDIR /app
+RUN go env -w GO111MODULE=off
 RUN go mod download all
 
 COPY *.go ./
