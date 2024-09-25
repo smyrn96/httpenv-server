@@ -1,14 +1,8 @@
-FROM golang:alpine AS build
+FROM golang:alpine
 COPY httpenv.go /go
 RUN go build httpenv.go
 
-FROM build AS test
-COPY _test.go /go
-COPY go.* ./
-RUN go mod download
-RUN go test ./...
-
-FROM build
+FROM alpine
 RUN addgroup -g 1000 httpenv \
     && adduser -u 1000 -G httpenv -D httpenv
 COPY --from=0 --chown=httpenv:httpenv /go/httpenv /httpenv
