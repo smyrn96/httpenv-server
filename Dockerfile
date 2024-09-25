@@ -4,7 +4,7 @@ RUN go build httpenv.go
 
 FROM build AS test
 # Download the Go module dependencies
-RUN go mod download
+RUN go mod download golang.org/x/mod@v0.2.0
 
 # Copy the rest of the application source code
 COPY *.go ./
